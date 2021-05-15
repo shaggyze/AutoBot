@@ -102,11 +102,12 @@ Global Const $LBS_MULTIPLESEL = 0x00000008
 AdlibRegister("_GUICtrl_SetResizing_Handler", 50)
 If Not IsAdmin() Then _errorHandler(0)
 $configini = "Frontend.ini"
+
 If FileExists("Frontend.ini") = False Then InetGet("http://shaggyze.uotiara.com/Frontend.ini", @ScriptDir & "\Frontend.ini", 1, 1)
 _readINI()
 $MabiPath = RegRead("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "")
 If $MabiPath = "" Then
-	RegWrite("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "", "REG_SZ", "C:\Nexon\Mabinogi")
+	RegWrite("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "", "REG_SZ", "C:\Nexon\Library\mabinogi\appdata")
 	$MabiPath = RegRead("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "")
 EndIf
 If FileExists($MabiPath & "\Client.exe") = False Then
@@ -120,9 +121,9 @@ If FileExists($MabiPath & "\Client.exe") = False Then
 		RegWrite("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "", "REG_SZ", $MabiDir)
 		$MabiPath = RegRead("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "")
 		Exit
-	ElseIf FileExists("C:\Nexon\Mabinogi\Client.exe") = True Then
-		MsgBox(0, "Mabinogi not detected", "AutoBot doesn't appear to be in the correct location:" & @CRLF & "Copy AutoBot to the C:\Nexon\Mabinogi directory")
-		RegWrite("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "", "REG_SZ", "C:\Nexon\Mabinogi")
+	ElseIf FileExists("C:\Nexon\Library\mabinogi\appdata\Client.exe") = True Then
+		MsgBox(0, "Mabinogi not detected", "AutoBot doesn't appear to be in the correct location:" & @CRLF & "Copy AutoBot to the C:\Nexon\Library\mabinogi\appdata directory")
+		RegWrite("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "", "REG_SZ", "C:\Nexon\Library\mabinogi\appdata")
 		$MabiPath = RegRead("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "")
 		Exit
 	Else
@@ -171,11 +172,11 @@ GUICtrlSetTip(-1, "")
 $TabSheet0 = GUICtrlCreateTabItem("Frontend")
 GUICtrlCreateLabel("", 0, 19, 925, 1025)
 GUICtrlSetTip(-1, "")
-;GUICtrlSetBkColor(-1, $colorhex)
+GUICtrlSetBkColor(-1, $colorhex)
 ;GUICtrlSetState(-1, $GUI_DISABLE)
 ;$ButtonS[7] = GUICtrlCreateButton("", 216, 52, 70, 25)
-$Group0 = GUICtrlCreateGroup("UO Tiara Mods", 6, 88, 879, 339)
-;GUICtrlSetBkColor(-1, $colorhex2)
+$Group0 = GUICtrlCreateGroup("UO Tiara Mods", 7, 30, 870, 395)
+GUICtrlSetBkColor(-1, $colorhex2)
 ;GUICtrlCreateGroup("", -99, -99, 1, 1)
 ;$ButtonS[8] = GUICtrlCreateButton("", 16, 32, 65, 25)
 ;========================================================
@@ -593,9 +594,9 @@ Else
 EndIf
 ;option to enable/disable GUI transparency
 ;on
-_WinAPI_SetLayeredWindowAttributes($Form1, 0xFFFFFE, 255)
+;_WinAPI_SetLayeredWindowAttributes($Form1, 0xFFFFFE, 255)
 ;off
-;_WinAPI_SetLayeredWindowAttributes($Form1, 0x000002, 255)
+_WinAPI_SetLayeredWindowAttributes($Form1, 0x000002, 255)
 _setValues()
 $directory = "Use"
 GUISetState(@SW_SHOW)
@@ -1338,8 +1339,8 @@ While 1
 			;_GUICtrlButton_SetFocus($ButtonS[6],true)
 		Case $Tab1
 			;_GUICtrlButton_SetFocus($ButtonS[6],true)
-			GUICtrlSetState($listview, $GUI_DISABLE)
-			;msgbox(0,"Test",guictrlread($Tab1))
+			;GUICtrlSetState($listview, $GUI_DISABLE)
+
 			GUICtrlSetData($tolerancelbl1, "")
 			GUICtrlSetData($tolerancelbl2, "")
 			GUICtrlSetData($tolerancelbl3, "")
@@ -1347,22 +1348,23 @@ While 1
 			GUICtrlDelete($tolerancelbl2)
 			GUICtrlDelete($tolerancelbl3)
 			$directory = "Use"
-			;if guictrlread($Tab1) = 0 then
-			;		GUICtrlDelete($listview1)
-			;		GUICtrlDelete($listview)
+			if guictrlread($Tab1) = 0 then
+					GUICtrlDelete($listview1)
+					GUICtrlDelete($listview)
 			;		_GUIScrollBars_EnableScrollBar($Form1, $SB_VERT, $_SCROLLBARCONSTANTS_ESB_ENABLE_BOTH)
-			;		$iScrollPos = Scrollbar_GetPos($Form1, $SB_VERT)
-			;		Scrollbar_Step(20, $Form1, $SB_VERT)
+					$iScrollPos = Scrollbar_GetPos($Form1, $SB_VERT)
+					Scrollbar_Step(20, $Form1, $SB_VERT)
 			;		$Mode="ZEP"
 			;		$configini=$Mode & ".ini"
-			;		_readINI()
-			;		_setValues()
+					_readINI()
+					_setValues()
+			endif
 			If GUICtrlRead($Tab1) = 0 Then
 					GUICtrlDelete($listview1)
 					GUICtrlDelete($listview)
 				$iScrollPos = Scrollbar_GetPos($Form1, $SB_VERT)
 				Scrollbar_Step(0, $Form1, $SB_VERT)
-				_GUIScrollBars_EnableScrollBar($Form1, $SB_VERT, $ESB_DISABLE_BOTH)
+				;_GUIScrollBars_EnableScrollBar($Form1, $SB_VERT, $ESB_DISABLE_BOTH)
 				GUICtrlSetState($listview, $GUI_ENABLE)
 				$configini = "Frontend.ini"
 				_content2()
@@ -1377,7 +1379,7 @@ While 1
 				_setValues()
 				_content($directory)
 				GUICtrlSetState($listview, $GUI_ENABLE)
-				_GUIScrollBars_EnableScrollBar($Form1, $SB_VERT, $ESB_DISABLE_BOTH)
+				;_GUIScrollBars_EnableScrollBar($Form1, $SB_VERT, $ESB_DISABLE_BOTH)
 			ElseIf GUICtrlRead($Tab1) = 2 Then
 				GUICtrlDelete($listview1)
 				GUICtrlSetData($dirCHK[1], $directory)
@@ -1747,10 +1749,10 @@ Func _content($directory)
 EndFunc   ;==>_content
 ;=======================================================================================
 Func _content2()
-	If $configini = "Frontend" Then
+	If $configini = "Frontend.ini" Then
 		GUICtrlDelete($listview)
 		GUICtrlDelete($listview1)
-		$listview1 = GUICtrlCreateListView("Mod Name                                                            |Status|Filename", 10, 100, 855, 310, $LBS_MULTIPLESEL)
+		$listview1 = GUICtrlCreateListView("Mod Name                                                            |Status|Filename", 10, 60, 860, 350, $LBS_MULTIPLESEL)
 		GUICtrlSetTip(-1, "Right Click to Enable/Disable UO Tiara Mods.")
 		GUICtrlSetBkColor(-1, $colorhex3)
 		$listviewContext1 = GUICtrlCreateContextMenu($listview1)
