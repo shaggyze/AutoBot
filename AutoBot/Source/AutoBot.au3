@@ -46,7 +46,7 @@ GUIRegisterMsg($WM_MOUSEWHEEL, "_Scrollbars_WM_MOUSEWHEEL")
 ;HotKeySet("{HOME}", "_cleanUp")
 
 Global $iID, $iRound, $sHexKeys, $sMouse, $sString, $hHookKeyboard, $pStub_KeyProc,$ClearID
-Global $ButtonS[9], $width, $height, $tl_x, $tl_y, $br_x, $br_y, $center_x, $center_y,$holdctrlCHK,$holdctrl,$2xCtrlClick,$2xCtrlClickSkill1,$2xCtrlClickSkill2,$2xCtrlClickSkill3
+Global $ButtonS[10], $width, $height, $tl_x, $tl_y, $br_x, $br_y, $center_x, $center_y,$holdctrlCHK,$holdctrl,$2xCtrlClick,$2xCtrlClickSkill1,$2xCtrlClickSkill2,$2xCtrlClickSkill3
 Global $x, $y, $a_size, $corr, $fossil_x, $fossil_y, $toleranceold, $F1_x, $F1_y,$dropitemsCHK,$movetargeting,$switchweapon,$centerclickCHK,$centerxoffsetINP,$centeryoffsetINP
 Global $x1, $y1, $coords[6], $topleftcorner[2], $bottomrightcorner[2], $searchbox[4],$holdaltCHK,$holdalt,$centerclickCMB,$centerclickusesINP,$centerclickdelayINP
 Global $center[2], $result, $broken, $brokenhex = 0xb502, $array, $hidewindows, $File_Name, $clickloopdelay,$hotkeyINP,$hotkey
@@ -81,7 +81,7 @@ Global $deathcheck, $deathCHK[4], $closewindowsCHK[5], $closewindows, $tolerance
 Global $tolerance3, $tolerancelbl1, $tolerancelbl2, $tolerancelbl3, $swapCHK, $timer, $File_Name1
 Global $VersionsInfo1, $FileSize, $findpropsCHK, $usemoverCHK[8], $findprops, $swapsieves, $MabiDir
 Global $useskillhotkeyBTN, $fossil_x1, $fossil_y1, $tolerance, $mabititle, $beak, $egg, $tooth, $MouseCoordMode, $PixelCoordMode
-Global $TabSheet7, $Group7, $mousemodeCMB, $changearea, $boxarea1, $TabSheet, $Group, $TabSheet0, $Group0, $CancelSkill1, $CancelSkill2, $CancelSkill3
+Global $TabSheet7, $Group7, $Group8, $mousemodeCMB, $changearea, $boxarea1, $TabSheet, $Group, $TabSheet0, $Group0, $CancelSkill1, $CancelSkill2, $CancelSkill3
 Global $FossilNamesCHK, $return, $InterfaceCHK, $Patcher[2], $listview1, $List_Name, $ModStatus, $CancelSkill1CHK, $CancelSkill2CHK, $CancelSkill3CHK,$2xCtrlClickSkill1CHK, $2xCtrlClickSkill2CHK, $2xCtrlClickSkill3CHK
 Global $Tab2, $TabSheet8, $TabSheet9, $HugeKeysCHK, $iScrollPos, $listviewContextItem1, $listviewContext1
 Global $THREAD_PROTECT, $THREAD_TARGET, $THREAD_DELAY, $UseDataFolder, $Adver2Party, $AdverToParty, $BlockEndingAds, $ClearDungeonFog, $ControlDayTime, $TimeOfDay, $DeadlyHPShow, $ElfLag, $EnableNameColoring, $EnableSelfRightClick, $HotbarAnything, $InfinitePartyTime, $ModifyZoomLimit, $ZoomDefault, $ZoomNear, $ZoomFar, $MoveToSameChannel, $NaoSoon, $RemoveLoginDelay, $ShowCombatPower, $ShowItemPrice, $ShowMinutes, $ShowTrueDurability, $ShowItemColor, $ShowTrueFoodQuality, $TalkToUnequippedEgo, $TargetMimics, $TargetSulfurGolem, $TargetProps, $UseBitmapFonts, $ViewNpcEquip, $DefaultRangeSwap
@@ -91,6 +91,9 @@ Global Const $TRAY_EVENT_PRIMARYDOUBLE = -13, $TRAY_EVENT_PRIMARYDOWN = -7, $SS_
 Global Const $LB_ITEMFROMPOINT = 0x01A9, $LB_SETCURSEL = 0x0186
 Global Const $__LISTBOXCONSTANT_ClassNames = "SysListView32|TListbox"
 Global Const $LBS_MULTIPLESEL = 0x00000008
+Global $ImageX, $ImageY, $EndX, $EndY, $Box[4], $MabiTop, $MabiLeft, $MabiWidth, $MabiHeight
+Global $MabiRight, $MabiBottom, $Title, $Title1,$Delay, $MouseDelay, $MouseSpeed, $Tolerance, $Transparency
+Global $ImageXOffset, $ImageYOffset, $EndXOffset, $EndYOffset
 ;Global Const $FO_READ		= 0 ; Read mode
 ;Global Const $FO_APPEND		= 1 ; Write mode (append)
 ;Global Const $FO_OVERWRITE	= 2 ; Write mode (erase previous contents)
@@ -103,7 +106,7 @@ AdlibRegister("_GUICtrl_SetResizing_Handler", 50)
 If Not IsAdmin() Then _errorHandler(0)
 $configini = "Frontend.ini"
 
-If FileExists("Frontend.ini") = False Then InetGet("http://shaggyze.uotiara.com/Frontend.ini", @ScriptDir & "\Frontend.ini", 1, 1)
+If FileExists("Frontend.ini") = False Then InetGet("https://github.com/shaggyze/AutoBot/raw/master/AutoBot/Frontend.ini", @ScriptDir & "\Frontend.ini", 1, 1)
 _readINI()
 $MabiPath = RegRead("HKEY_CURRENT_USER\Software\Nexon\Mabinogi", "")
 If $MabiPath = "" Then
@@ -497,6 +500,18 @@ GUICtrlSetBkColor(-1, $colorhex3)
 ;GUICtrlCreateGroup("", -99, -99, 1, 1)
 $ButtonS[4] = GUICtrlCreateButton("Start", 16, 32, 65, 25)
 ;========================================================
+;GUI Tailor Minigame
+$TabSheet7 = GUICtrlCreateTabItem("Tailor")
+GUICtrlCreateLabel("", 0, 19, 925, 455)
+GUICtrlSetTip(-1, "")
+GUICtrlSetBkColor(-1, $colorhex)
+GUICtrlSetState(-1, $GUI_DISABLE)
+$Group8 = GUICtrlCreateGroup("Tailor Settings", 6, 88, 579, 339)
+GUICtrlSetBkColor(-1, $colorhex2)
+GUICtrlSetBkColor(-1, $colorhex3)
+GUICtrlCreateGroup("", -99, -99, 1, 1)
+$ButtonS[9] = GUICtrlCreateButton("Start", 16, 32, 65, 25)
+;========================================================
 ;GUI Clicker
 $TabSheet7 = GUICtrlCreateTabItem("Clicker")
 GUICtrlCreateLabel("", 0, 19, 925, 455)
@@ -582,7 +597,7 @@ GUICtrlCreateTabItem("")
 $Button6 = GUICtrlCreateButton("Screen Capture", 487, 0, 100, 20)
 GUICtrlSetTip(-1, "Screen Capture")
 $Button7 = GUICtrlCreateButton("ShaggyZE's Site", 780, 0, 100, 20)
-GUICtrlSetTip(-1, "http://shaggyze.uotiara.com")
+GUICtrlSetTip(-1, "https://github.com/shaggyze/AutoBot")
 ;========================================================
 ;Main Program Start
 If $useitems = 1 Then
@@ -763,6 +778,7 @@ While 1
 			SoundPlay("")
 			GUISetState(@SW_HIDE)
 			$Mode = "Fight"
+			_startUp()
 			IniWrite($configini, "Skill Settings", "useskill", GUICtrlRead($useskillCHK))
 			IniWrite($configini, "Skill Settings", "firstskill", "|" & GUICtrlRead($useskillhotkeyINP[1]) & "|")
 			IniWrite($configini, "Skill Settings", "skilluses", GUICtrlRead($useskillusesINP))
@@ -1002,6 +1018,22 @@ While 1
 
 				EndIf
 			WEnd
+		Case $ButtonS[9]
+			SoundPlay("")
+			GUISetState(@SW_HIDE)
+			$Mode = "Tailor"
+			_startUp()
+			While $Mode = "Tailor"
+	ToolTip ("Searching.", 0, @DesktopHeight - 60, $Title1)
+	Sleep ($Delay)
+	$Result = Search()
+	If $Result = 0 Then
+		ToolTip ("Error: Search Failed.", 0, @DesktopHeight - 60, $Title1)
+		Sleep ($Delay * 100)
+	EndIf
+	Sleep ($Delay)
+			WEnd
+			;========================================================
 			;========================================================
 			;Case $ButtonS[6]
 			;GUISetState(@SW_MINIMIZE)
@@ -1028,7 +1060,7 @@ While 1
 			;endif
 			;========================================================
 		Case $Button7
-			$IE = _IECreate("http://shaggyze.uotiara.com")
+			$IE = _IECreate("https://github.com/shaggyze/AutoBot")
 			;========================================================
 		Case $autoscanCHK[0]
 			IniWrite($configini, "Fossil Settings", "autoscan", GUICtrlRead($autoscanCHK[0]))
@@ -1107,9 +1139,9 @@ While 1
 			IniWrite($configini, "Settings", "useitems", GUICtrlRead($useitemsCHK[4]))
 			;========================================================
 		Case $dropitemsCHK
-			IniWrite("fight.ini", "Settings", "dropitems", GUICtrlRead($dropitemsCHK))
-			IniWrite("fight.ini", "Settings", "dropxoffset", GUICtrlRead($dropxoffsetINP))
-			IniWrite("fight.ini", "Settings", "dropyoffset", GUICtrlRead($dropyoffsetINP))
+			IniWrite("Fight.ini", "Settings", "dropitems", GUICtrlRead($dropitemsCHK))
+			IniWrite("Fight.ini", "Settings", "dropxoffset", GUICtrlRead($dropxoffsetINP))
+			IniWrite("Fight.ini", "Settings", "dropyoffset", GUICtrlRead($dropyoffsetINP))
 			;========================================================
 		Case $holdaltCHK
 			IniWrite("clicker.ini", "Settings", "holdalt", GUICtrlRead($holdaltCHK))
@@ -1793,16 +1825,23 @@ EndFunc   ;==>_content2
 ;=======================================================================================
 Func _startUp()
 	;If $runonce=1 Then Return 0
-	If FileExists("ImageSearchDLL.dll") = False Then _errorHandler(1)
+	;If FileExists("ImageSearchDLL.dll") = False Then _errorHandler(1)
+	;If $Mode = "" Then Return 0
 	$configini = $Mode & ".ini"
 	_readINI()
 	If $Mode = "Clicker" Then
+		$configini = "config.ini"
+		_readINI()
+	ElseIf $Mode = "Tailor" Then
+		$configini = "config.ini"
+		_readINI()
 	Else
 		_makeINILists()
 	EndIf
 	_refreshScreen()
-	Return (1)
 	$runonce = 1
+	Return (1)
+
 EndFunc   ;==>_startUp
 ;=======================================================================================
 Func _refreshScreen()
@@ -1853,6 +1892,7 @@ Func _refreshScreen()
 EndFunc   ;==>_refreshScreen
 ;=======================================================================================
 Func _readINI()
+	;msgbox(0,$Mode,$configini)
 	$MabiDir = IniRead("Frontend.ini", "Settings", "MabiDir", "")
 	$mabititle = IniRead("config.ini", "Settings", "mabititle", "Mabinogi")
 	$debug = IniRead("config.ini", "Settings", "debug", "0")
@@ -1882,9 +1922,9 @@ Func _readINI()
 	$findprops = IniRead($configini, "Settings", "findprops", "1")
 	$hidewindows = IniRead($configini, "Settings", "hidewindows", "0")
 	$closewindows = IniRead($configini, "Settings", "closewindows", "0")
-	$dropitems = IniRead("fight.ini", "Settings", "dropitems", "0")
-	$dropxoffset = IniRead("fight.ini", "Settings", "dropxoffset", "0")
-	$dropyoffset = IniRead("fight.ini", "Settings", "dropyoffset", "0")
+	$dropitems = IniRead("Fight.ini", "Settings", "dropitems", "0")
+	$dropxoffset = IniRead("Fight.ini", "Settings", "dropxoffset", "0")
+	$dropyoffset = IniRead("Fight.ini", "Settings", "dropyoffset", "0")
 	$metalxoffset = IniRead($configini, "Settings", "metalxoffset", "20")
 	$metalyoffset = IniRead($configini, "Settings", "metalyoffset", "20")
 	$fossilxoffset = IniRead("config.ini", "Settings", "fossilxoffset", "0")
@@ -1938,6 +1978,17 @@ Func _readINI()
 	$searchmode = IniRead("config.ini", "Settings", "searchmode", "Desktop")
 	$checkupdate = IniRead("config.ini", "Settings", "checkupdate", "1")
 	$boxarea = IniRead($configini, "Settings", "boxarea", "fullscreen")
+$Title1 = "Tailor Minigame"
+$Title = IniRead("config.ini","Settings","Title","Mabinogi")
+$Delay = IniRead("config.ini","Settings","Delay","300")
+$MouseDelay = IniRead("config.ini","Settings","MouseDelay","500")
+$MouseSpeed = IniRead("config.ini","Settings","MouseSpeed","10")
+$ImageXOffset = IniRead("config.ini","Settings","ImageXOffset","0.5")
+$ImageYOffset = IniRead("config.ini","Settings","ImageYOffset","19")
+$EndXOffset = IniRead("config.ini","Settings","EndXOffset","0.5")
+$EndYOffset = IniRead("config.ini","Settings","EndYOffset","19")
+$Tolerance = IniRead("config.ini","Settings","Tolerance","70")
+$Transparency = IniRead("config.ini","Settings","Transparency","0x000000")
 EndFunc   ;==>_readINI
 ;=======================================================================================
 Func _makeINILists()
@@ -2457,7 +2508,7 @@ Func _findItems()
 				MouseMove($mouseorigin[0], $mouseorigin[1], 1)
 				Return 1
 			Else
-				If $usemover = 0 Then _forceMover()
+				;If $usemover = 0 Then _forceMover()
 				Sleep($shortestdelay)
 				MouseMove($mouseorigin[0], $mouseorigin[1], 1)
 				$notdetected = $notdetected + 1
@@ -3106,11 +3157,11 @@ Func _Updater()
 		FileDelete(_RTRIM(@ScriptDir, "\AutoBot") & "\version.ini")
 		$mirror = IniRead($MabiPath & "\AutoBot\config.ini", "Settings", "mirror", "1")
 		If $mirror = 1 Then
-			$VersionsInfo = "http://uotiara.com/uotiara/version.ini"
+			$VersionsInfo = "https://raw.githubusercontent.com/shaggyze/AutoBot/main/version.ini"
 		Else
-			$VersionsInfo = "http://uotiara.com/shaggyze/version.ini"
+			$VersionsInfo = "http://shaggyze.website/Autobot/version.ini"
 		EndIf
-		$VersionsInfo1 = "http://uotiara.com/shaggyze/version.ini"
+		$VersionsInfo1 = "https://raw.githubusercontent.com/shaggyze/AutoBot/main/version.ini"
 		$oldVersion = IniRead($MabiPath & "\AutoBot\config.ini", "Settings", "version", "1")
 		FileDelete($MabiPath & "\version.ini")
 		$Ini = InetGet($VersionsInfo, $MabiPath & "\version.ini") ;download version.ini
@@ -3156,34 +3207,37 @@ Local $vkCode = DllStructGetData($KBDLLHOOKSTRUCT, "vkCode")
 			ElseIf $vkCode = IniRead("config.ini","Hotkeys","stop","36") Then
 				IniWrite("config.ini","Hotkeys","stop",$vkCode)
 				$Mode = ""
+				GUISetState(@SW_SHOW)
 				_cleanUp()
 			ElseIf $vkCode = IniRead("config.ini","Hotkeys","restore","88") Then
 				IniWrite("config.ini","Hotkeys","restore",$vkCode)
 				If $Mode = "Restoration" Or $Mode = "Mining" Then
+					GUISetState(@SW_MINIMIZE)
 					If _restore() = 1 Then
 						If $completefossil = 1 Then MouseClick("left")
 						Sleep($longestdelay)
 					EndIf
-				Else
-					;find a use
 				EndIf
 			ElseIf $vkCode = IniRead("config.ini","Hotkeys","autoscan","90") Then
 				IniWrite("config.ini","Hotkeys","autoscan",$vkCode)
 				If $Mode = "Restoration" Or $Mode = "Mining" Then
 					If $autoscan = 1 Then
 						$autoscan = 4
-						GUISetState(@SW_SHOW)
+						IniWrite("Restoration.ini", "Fossil Settings", "autoscan", $autoscan)
+						;GUISetState(@SW_SHOW)
 						ToolTip("Auto detect has been turned Off.", 0, @DesktopHeight - 20)
 						Sleep($longestdelay)
-						_cleanUp()
+						;_cleanUp()
+						;_startUp()
 					Else
 						$autoscan = 1
-						GUISetState(@SW_HIDE)
+						IniWrite("Restoration.ini", "Fossil Settings", "autoscan", $autoscan)
+						;GUISetState(@SW_MINIMIZE)
+						If Not WinActive($mabititle) Then WinActivate($mabititle)
 						ToolTip( "Auto detect has been turned On.", 0, @DesktopHeight - 20)
 						Sleep($longestdelay)
+						;_cleanUp()
 					EndIf
-				Else
-					;find a use
 				EndIf
 			ElseIf $vkCode = IniRead("config.ini","Hotkeys","pause","19") Then
 				IniWrite("config.ini","Hotkeys","pause",$vkCode)
@@ -3316,4 +3370,44 @@ Func _TestArea($x1, $y1, $x2, $y2, $delay)
 	Sleep($delay)
 	GUISetState(@SW_HIDE, $SELECT_H)
 EndFunc   ;==>_TestArea
+Func Search()
+	_setSearchCoords("fullscreen")
+	ToolTip ("Searching..", 0, @DesktopHeight - 60, $Title1)
+	$Result = _ImageSearchArea(@ScriptDir & "\Find\Images\buttons\X.bmp", 1, $searchbox[0], $searchbox[1], $searchbox[2], $searchbox[3], $ImageX, $ImageY, $Tolerance)
+	Sleep ($Delay)
+	If $Result = 1 Then
+		$Result = Tailor_Minigame($ImageX + $ImageXOffset, $ImageY + $ImageYOffset)
+		Return 1
+	Else
+		ToolTip ("Searching..." & @CRLF & "Start X Not Found", 0, @DesktopHeight - 60, $Title1)
+		Sleep ($Delay * 100)
+		Return 2
+	EndIf
+EndFunc
+
+Func Tailor_Minigame($StartX, $StartY)
+	_setSearchCoords("fullscreen")
+	ToolTip ("Searching..", 0, @DesktopHeight - 60, $Title1)
+	$Result = _ImageSearchArea(@ScriptDir & "\Find\Images\buttons\O.bmp", 1, $searchbox[0], $searchbox[1], $searchbox[2], $searchbox[3], $EndX, $EndY, $Tolerance)
+	Sleep ($Delay)
+	If $Result = 1 Then
+		_MouseDrag ($StartX, $StartY, $EndX + $EndXOffset, $EndY + $EndYOffset)
+		Return 1
+	Else
+		ToolTip ("Searching..." & @CRLF & "End O Not Found", 0, @DesktopHeight - 70, $Title1)
+		Sleep ($Delay * 100)
+		Return 2
+	EndIf
+EndFunc
+
+Func _MouseDrag($x1, $y1, $x2, $y2)
+	MouseMove ($x1, $y1, $MouseSpeed)
+	Sleep ($MouseDelay)
+	MouseDown ("Left")
+	MouseMove ($x2, $y2, $MouseSpeed)
+	Sleep ($MouseDelay)
+	MouseUp ("Left")
+	Sleep ($MouseDelay)
+	Return 1
+EndFunc
 #endregion Core functions
