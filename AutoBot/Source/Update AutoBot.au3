@@ -44,10 +44,6 @@ if $FileSize = 0 Then
 $FileDownloadURL = "http://shaggyze.website/Autobot/"
 $FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
 endif
-if $FileSize = 0 Then
-$FileDownloadURL = "http://uotiara.com/shaggyze/"
-$FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
-endif
 Elseif $mirror =2 then
 $FileDownloadURL = "http://shaggyze.hobby-site.com:8080/Mabinogi%20Mods/"
 $FileToDownload = "version.ini"
@@ -56,20 +52,12 @@ if $FileSize = 0 Then
 $FileDownloadURL = "http://shaggyze.website/Autobot/"
 $FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
 endif
-if $FileSize = 0 Then
-$FileDownloadURL = "http://uotiara.com/shaggyze/"
-$FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
-endif
 Elseif $mirror=0 or $mirror=4 then
 $FileDownloadURL = "https://raw.githubusercontent.com/shaggyze/AutoBot/main/"
 $FileToDownload = "version.ini"
 $FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
 if $FileSize = 0 Then
 $FileDownloadURL = "http://shaggyze.website/Autobot/"
-$FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
-endif
-if $FileSize = 0 Then
-$FileDownloadURL = "http://shaggyze.uotiara.com"
 $FileSize = InetGetSize ($FileDownloadURL & $FileToDownload,1)
 endif
 endif
