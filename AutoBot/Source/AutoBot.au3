@@ -1061,7 +1061,7 @@ While 1
 			;endif
 			;========================================================
 		Case $Button7
-			$IE = _IECreate("https://github.com/shaggyze/AutoBot")
+			ShellExecute("https://github.com/shaggyze/AutoBot")
 			;========================================================
 		Case $autoscanCHK[0]
 			IniWrite($configini, "Fossil Settings", "autoscan", GUICtrlRead($autoscanCHK[0]))
