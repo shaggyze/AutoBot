@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_Compression=0
 #AutoIt3Wrapper_Res_Comment=AutoBot
 #AutoIt3Wrapper_Res_Description=AutoBot
-#AutoIt3Wrapper_Res_Fileversion=258.0.0.0
+#AutoIt3Wrapper_Res_Fileversion=479.0.0.0
 #AutoIt3Wrapper_Res_LegalCopyright=ShaggyZE
 #AutoIt3Wrapper_Res_requestedExecutionLevel=requireAdministrator
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
@@ -92,7 +92,7 @@ Global Const $LB_ITEMFROMPOINT = 0x01A9, $LB_SETCURSEL = 0x0186
 Global Const $__LISTBOXCONSTANT_ClassNames = "SysListView32|TListbox"
 Global Const $LBS_MULTIPLESEL = 0x00000008
 Global $ImageX, $ImageY, $EndX, $EndY, $Box[4], $MabiTop, $MabiLeft, $MabiWidth, $MabiHeight
-Global $MabiRight, $MabiBottom, $Title, $Title1,$Delay, $MouseDelay, $MouseSpeed, $Tolerance, $Transparency
+Global $AutoBotTitle, $MabiRight, $MabiBottom, $Title, $Title1,$Delay, $MouseDelay, $MouseSpeed, $Tolerance, $Transparency
 Global $ImageXOffset, $ImageYOffset, $EndXOffset, $EndYOffset
 ;Global Const $FO_READ		= 0 ; Read mode
 ;Global Const $FO_APPEND		= 1 ; Write mode (append)
@@ -136,6 +136,7 @@ If FileExists($MabiPath & "\Client.exe") = False Then
 		Exit
 	EndIf
 EndIf
+$AutoBotTitle = IniRead($MabiPath & "\AutoBot\config.ini", "Settings", "AutoBotTitle", "AutoBot v")
 $version = IniRead($MabiPath & "\AutoBot\config.ini", "Settings", "version", "1")
 $MouseCoordMode = IniRead($MabiPath & "\AutoBot\config.ini", "Settings", "MouseCoordMode", "0")
 $PixelCoordMode = IniRead($MabiPath & "\AutoBot\config.ini", "Settings", "PixelCoordMode", "1")
@@ -161,7 +162,7 @@ $hHookKeyboard = _WinAPI_SetWindowsHookEx($WH_KEYBOARD_LL, DllCallbackGetPtr($pS
 ;EndIf
 ;========================================================
 ;GUI Start
-$Form1 = GUICreate("AutoBot v" & $version, 900, 430,-1,-1,BitOR ($GUI_SS_DEFAULT_GUI, $WS_THICKFRAME, $WS_VSCROLL))
+$Form1 = GUICreate($AutoBotTitle & $version, 900, 430,-1,-1,BitOR ($GUI_SS_DEFAULT_GUI, $WS_THICKFRAME, $WS_VSCROLL))
 _GUIScrollBars_Init(-1)
 _GUIScrollBars_SetScrollInfo(-1,$iScrollPos, $SB_VERT)
 _GUICtrl_SetOnResize(-1)
